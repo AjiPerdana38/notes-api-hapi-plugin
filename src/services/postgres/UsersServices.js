@@ -23,7 +23,7 @@ class UsersService {
     const result = await this._pool.query(query);
 
     if (!result.rows.length) {
-      throw new InvariantError('User gagal tidambahakn');
+      throw new InvariantError('User gagal ditambahkan');
     }
 
     return result.rows[0].id;
@@ -78,6 +78,15 @@ class UsersService {
     }
 
     return id;
+  }
+
+  async getUsersByUsername(username) {
+    const query = {
+      text: 'SELECT id, username, fullname FROM users WHERE username LIKE $1',
+      values: [`%${username}%`],
+    };
+    const result = await this._pool.query(query);
+    return result.rows;
   }
 }
 
